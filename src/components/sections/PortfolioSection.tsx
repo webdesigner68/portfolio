@@ -82,8 +82,8 @@ export default function PortfolioSection() {
   const x = useMotionValue(0);
   const statsRef = useRef(null);
   const portfolioRef = useRef(null);
-  const isStatsInView = useInView(statsRef, { once: true, margin: "0px", amount: 0.3 });
-  const isPortfolioInView = useInView(portfolioRef, { once: true, margin: "0px", amount: 0.3 });
+  const isStatsInView = useInView(statsRef, { once: true, margin: "-20% 0px" });
+  const isPortfolioInView = useInView(portfolioRef, { once: true, margin: "-20% 0px" });
 
   // Fonction pour empêcher le scroll horizontal sur la page
   useEffect(() => {
