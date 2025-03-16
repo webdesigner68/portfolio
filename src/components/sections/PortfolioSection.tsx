@@ -81,7 +81,7 @@ export default function PortfolioSection() {
   const dragControls = useDragControls();
   const x = useMotionValue(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "300px", amount: 0.2 });
 
   // Fonction pour empêcher le scroll horizontal sur la page
   useEffect(() => {
@@ -540,7 +540,7 @@ export default function PortfolioSection() {
                   transition: { type: "spring", stiffness: 300, damping: 15 }
                 }}
                 whileTap={{ scale: 0.99 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, margin: "100px" }}
               >
                 <div className="bg-[#162855] rounded-xl overflow-hidden shadow-xl hover:shadow-blue-500/10 transition-all duration-300 h-full transform">
                   {/* Image du projet avec effet parallaxe */}

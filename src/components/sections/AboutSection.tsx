@@ -17,7 +17,7 @@ const skills = [
 
 export default function AboutSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "300px", amount: 0 });
+  const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
   
   return (
     <section id="about" ref={ref} className="py-16 md:py-24 bg-gradient-to-b from-[#162855] to-[#0f1c3a]">

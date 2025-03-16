@@ -135,7 +135,7 @@ const specializedServices = [
 
 export default function ServicesSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "300px", amount: 0 });
+  const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
   const [selectedService, setSelectedService] = useState<typeof specializedServices[0] | null>(null);
   const [showModal, setShowModal] = useState(false);
 
