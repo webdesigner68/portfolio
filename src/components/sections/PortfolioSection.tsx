@@ -80,8 +80,10 @@ export default function PortfolioSection() {
   const progressControls = useAnimation();
   const dragControls = useDragControls();
   const x = useMotionValue(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const statsRef = useRef(null);
+  const portfolioRef = useRef(null);
+  const isStatsInView = useInView(statsRef, { once: true, margin: "-50px", amount: 0.1 });
+  const isPortfolioInView = useInView(portfolioRef, { once: true, margin: "-100px", amount: 0.2 });
 
   // Fonction pour empêcher le scroll horizontal sur la page
   useEffect(() => {
@@ -365,62 +367,185 @@ export default function PortfolioSection() {
       </div>
 
       {/* Section de statistiques */}
-      <div className="container-section mt-8 mb-16">
+      <div ref={statsRef} className="container-section mt-8 mb-16">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
         >
           {/* Projets terminés */}
-          <div className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300">
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ 
+              duration: 0.7,
+              delay: 0.1,
+              type: "spring",
+              stiffness: 50,
+              damping: 10
+            }}
+            className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300"
+          >
             <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={isStatsInView ? { scale: 1 } : {}}
+                transition={{
+                  delay: 0.2,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 15
+                }}
+                className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-              </div>
-              <span className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">42</span>
-              <h3 className="mt-2 text-white text-lg md:text-xl font-medium">Projets terminés</h3>
-              <p className="text-gray-400 text-sm mt-2">Applications web et sites vitrines livrés à temps</p>
+              </motion.div>
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={isStatsInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text"
+              >
+                42
+              </motion.span>
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="mt-2 text-white text-lg md:text-xl font-medium"
+              >
+                Projets terminés
+              </motion.h3>
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.9, duration: 0.5 }}
+                className="text-gray-400 text-sm mt-2"
+              >
+                Applications web et sites vitrines livrés à temps
+              </motion.p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Satisfaction client */}
-          <div className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300">
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ 
+              duration: 0.7,
+              delay: 0.4,
+              type: "spring",
+              stiffness: 50,
+              damping: 10
+            }}
+            className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300"
+          >
             <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={isStatsInView ? { scale: 1 } : {}}
+                transition={{
+                  delay: 0.5,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 15
+                }}
+                className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                 </svg>
-              </div>
-              <span className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">100%</span>
-              <h3 className="mt-2 text-white text-lg md:text-xl font-medium">Satisfaction client</h3>
-              <p className="text-gray-400 text-sm mt-2">Tous mes clients sont satisfaits de leur projet</p>
+              </motion.div>
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={isStatsInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text"
+              >
+                100%
+              </motion.span>
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 1.0, duration: 0.5 }}
+                className="mt-2 text-white text-lg md:text-xl font-medium"
+              >
+                Satisfaction client
+              </motion.h3>
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 1.2, duration: 0.5 }}
+                className="text-gray-400 text-sm mt-2"
+              >
+                Tous mes clients sont satisfaits de leur projet
+              </motion.p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Avis clients */}
-          <div className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300">
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ 
+              duration: 0.7,
+              delay: 0.7,
+              type: "spring",
+              stiffness: 50,
+              damping: 10
+            }}
+            className="bg-[#162855] p-6 rounded-xl shadow-xl border border-blue-500/10 transform hover:scale-105 transition-all duration-300"
+          >
             <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center">
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={isStatsInView ? { scale: 1 } : {}}
+                transition={{
+                  delay: 0.8,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 15
+                }}
+                className="w-16 h-16 mb-4 rounded-full bg-blue-500/10 flex items-center justify-center"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                 </svg>
-              </div>
-              <span className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">5.0</span>
-              <h3 className="mt-2 text-white text-lg md:text-xl font-medium">Note moyenne</h3>
-              <p className="text-gray-400 text-sm mt-2">Sur la base de 18 avis vérifiés</p>
+              </motion.div>
+              <motion.span 
+                initial={{ opacity: 0 }}
+                animate={isStatsInView ? { opacity: 1 } : {}}
+                transition={{ delay: 1.1, duration: 0.8 }}
+                className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text"
+              >
+                5.0
+              </motion.span>
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 1.3, duration: 0.5 }}
+                className="mt-2 text-white text-lg md:text-xl font-medium"
+              >
+                Note moyenne
+              </motion.h3>
+              <motion.p 
+                initial={{ opacity: 0, y: 10 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 1.5, duration: 0.5 }}
+                className="text-gray-400 text-sm mt-2"
+              >
+                Sur la base de 18 avis vérifiés
+              </motion.p>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
-      <div className="container-section mb-10">
+      <div ref={portfolioRef} className="container-section mb-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isPortfolioInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
             className="section-title text-white leading-tight text-3xl md:text-4xl font-extrabold mb-4"
           >
@@ -428,7 +553,7 @@ export default function PortfolioSection() {
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isPortfolioInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-300 leading-relaxed"
           >
@@ -439,7 +564,7 @@ export default function PortfolioSection() {
         {/* Filtres de catégories */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={isPortfolioInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-wrap justify-center gap-4 mb-12"
         >
@@ -460,7 +585,7 @@ export default function PortfolioSection() {
       </div>
 
       {/* Carrousel de projets pleine largeur */}
-      <div ref={ref} className="w-full relative">
+      <div className="w-full relative">
         <div ref={containerRef} className="relative overflow-hidden will-change-transform overscroll-x-none touch-none">
           <motion.div
             ref={carouselRef}
@@ -488,7 +613,7 @@ export default function PortfolioSection() {
                 key={`${project.id}-${index}`}
                 className="min-w-[100%] sm:min-w-[80%] md:min-w-[50%] lg:min-w-[33.333%] px-3 sm:px-4 will-change-transform touch-manipulation"
                 initial={{ opacity: 0, scale: 0.98 }}
-                animate={isInView ? { 
+                animate={isPortfolioInView ? { 
                   opacity: 1, 
                   scale: 1,
                   transition: { 
@@ -667,7 +792,7 @@ export default function PortfolioSection() {
         <div className="text-center mt-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isPortfolioInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.7, duration: 0.6 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
@@ -684,7 +809,7 @@ export default function PortfolioSection() {
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 0.7 } : {}}
+            animate={isPortfolioInView ? { opacity: 0.7 } : {}}
             transition={{ delay: 0.9, duration: 0.6 }}
             className="text-gray-400 mt-4 text-sm"
           >
