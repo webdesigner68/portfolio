@@ -78,7 +78,9 @@ export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const ref = useRef(null);
+  const statsRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
+  const isStatsInView = useInView(statsRef, { once: true, margin: "500px", amount: 0.1 });
   const maxIndex = testimonials.length - 1;
 
   const nextSlide = () => {
@@ -217,22 +219,29 @@ export default function TestimonialsSection() {
         </div>
 
         {/* Statistiques */}
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={statsRef} className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { value: "42", label: "Projets terminés", icon: "📊" },
-            { value: "42", label: "Clients satisfaits", icon: "🙂" },
-            { value: "3", label: "Années d'expérience", icon: "🗓️" },
+            { value: "42", label: "Projets terminés", subtext: "Applications web et sites vitrines livrés à temps", icon: "📊" },
+            { value: "100%", label: "Satisfaction client", subtext: "Tous mes clients sont satisfaits de leur projet", icon: "🙂" },
+            { value: "5.0", label: "Note moyenne", subtext: "Sur la base des retours clients", icon: "⭐" },
           ].map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 0.5, 
+                delay: 0.1 + index * 0.1,
+                type: "spring",
+                stiffness: 300,
+                damping: 25
+              }}
               className="bg-[#1e3575] rounded-xl p-6 text-center shadow-lg border border-[#304b8a]/30 hover:border-blue-400/30 transition-colors group"
             >
               <div className="text-3xl mb-3">{stat.icon}</div>
               <div className="text-4xl font-bold text-blue-400 mb-2 group-hover:text-blue-300 transition-colors">{stat.value}</div>
-              <div className="text-white text-lg tracking-wide">{stat.label}</div>
+              <div className="text-white text-lg tracking-wide mb-2">{stat.label}</div>
+              <div className="text-gray-300 text-sm">{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
