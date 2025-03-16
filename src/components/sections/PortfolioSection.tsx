@@ -175,20 +175,37 @@ export default function PortfolioSection() {
   const createExtendedProjects = () => {
     if (filteredProjects.length === 0) return [];
     
-    // Dupliquer des projets à la fin
-    const endDuplicates = filteredProjects.slice(0, visibleProjects).map((project, index) => ({
-      ...project,
-      duplicateId: `end-${index}`
-    }));
-    
-    // Dupliquer des projets au début
-    const startDuplicates = filteredProjects.slice(-visibleProjects).map((project, index) => ({
-      ...project,
-      duplicateId: `start-${index}`
-    }));
-    
-    // Combiner pour créer un tableau étendu: [...fin, ...originaux, ...début]
-    return [...startDuplicates, ...filteredProjects, ...endDuplicates];
+    // Si nous avons assez de projets pour remplir la vue, nous n'avons besoin que d'une seule copie à chaque extrémité
+    if (filteredProjects.length >= visibleProjects * 2) {
+      // Dupliquer uniquement le nombre nécessaire de projets à la fin
+      const endDuplicates = filteredProjects.slice(0, visibleProjects).map((project, index) => ({
+        ...project,
+        duplicateId: `end-${index}`
+      }));
+      
+      // Dupliquer uniquement le nombre nécessaire de projets au début
+      const startDuplicates = filteredProjects.slice(-visibleProjects).map((project, index) => ({
+        ...project,
+        duplicateId: `start-${index}`
+      }));
+      
+      // Combiner pour créer un tableau étendu: [...fin, ...originaux, ...début]
+      return [...startDuplicates, ...filteredProjects, ...endDuplicates];
+    } 
+    // Si nous n'avons pas assez de projets, créons une seule copie complète
+    else {
+      return [
+        ...filteredProjects.map((project, index) => ({
+          ...project,
+          duplicateId: `start-${index}`
+        })),
+        ...filteredProjects,
+        ...filteredProjects.map((project, index) => ({
+          ...project,
+          duplicateId: `end-${index}`
+        }))
+      ];
+    }
   };
   
   const extendedProjects = createExtendedProjects();
@@ -474,25 +491,51 @@ export default function PortfolioSection() {
         </div>
 
         {/* Filtres de catégories */}
+        <div className="mt-4 flex justify-center">
+          <div className="inline-flex bg-[#162855] rounded-full p-1.5">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setCurrentIndex(0);
+                  
+                  // Réinitialiser la position du carousel
+                  if (springX && cardWidth) {
+                    springX.set(-(offset) * cardWidth);
+                  }
+                  
+                  // Réinitialiser la barre de progression
+                  progressControls.start({
+                    scaleX: 0,
+                    transition: { duration: 0.3 }
+                  });
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                  activeCategory === category 
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md"
+                    : "bg-[#1e3575] text-gray-200 hover:bg-[#2d4893]"
+                }`}
+              >
+                {category}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Message explicatif pour le carrousel */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="text-center mt-4 mb-6 text-gray-400 text-sm"
         >
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === category
-                  ? "bg-blue-500 text-white shadow-md"
-                  : "bg-[#1e3575] text-gray-200 hover:bg-[#2d4893]"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+          <span className="inline-block">
+            {filteredProjects.length} projet{filteredProjects.length > 1 ? 's' : ''} unique{filteredProjects.length > 1 ? 's' : ''} — Faites défiler pour les découvrir
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block ml-1 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </span>
         </motion.div>
       </div>
 
@@ -650,27 +693,44 @@ export default function PortfolioSection() {
         
         {/* Barre de progression du carrousel avec animation améliorée - plus visible sur mobile */}
         <div className="container-section mt-6 sm:mt-8">
-          <div className="w-full bg-[#162855] h-1.5 sm:h-1 rounded-full overflow-hidden">
+          <div className="w-full bg-[#162855] h-1.5 sm:h-1 rounded-full overflow-hidden relative">
             <motion.div 
               className="h-full bg-gradient-to-r from-blue-400 to-blue-600 origin-left"
               initial={{ scaleX: 0 }}
               animate={progressControls}
               transition={{ ease: "circOut" }}
             />
+            
+            {/* Marqueurs de projets */}
+            <div className="absolute inset-0 flex items-center justify-between px-1">
+              {filteredProjects.map((_, idx) => (
+                <div 
+                  key={`marker-${idx}`} 
+                  className={`w-1 h-1 rounded-full ${
+                    idx <= currentIndex ? 'bg-white' : 'bg-[#2d4893]'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
           
           <div className="flex justify-between text-xs sm:text-sm text-gray-400 mt-2">
-            <span className="hidden sm:inline">Navigation circulaire</span>
-            <span className="sm:hidden">Projet</span>
-            <span>{currentIndex + 1} / {filteredProjects.length}</span>
+            <span className="flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+              <span className="hidden sm:inline">Projets uniques</span>
+              <span className="sm:hidden">Projets</span>
+            </span>
+            <span className="font-medium">{currentIndex + 1} / {filteredProjects.length}</span>
           </div>
         </div>
         
         {/* Indicateurs de page (dots) avec animations améliorées - Ajusté pour mobile */}
         <div className="flex justify-center mt-4 sm:mt-6 gap-1.5 sm:gap-2 flex-wrap">
-          {Array.from({ length: filteredProjects.length }).map((_, index) => (
+          {filteredProjects.map((project, index) => (
             <motion.button
-              key={index}
+              key={`dot-${project.id}`}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.4 + index * 0.05 }}
@@ -692,11 +752,21 @@ export default function PortfolioSection() {
                 
                 setTimeout(() => setIsAnimating(false), 300);
               }}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`relative w-3 h-3 rounded-full transition-all duration-300 ${
                 currentIndex === index ? 'bg-blue-500 w-6' : 'bg-[#162855] hover:bg-[#2d4893]'
               }`}
               aria-label={`Aller au projet ${index + 1}`}
-            />
+            >
+              {currentIndex === index && (
+                <motion.span 
+                  className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full opacity-0 pointer-events-none" 
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {index + 1}
+                </motion.span>
+              )}
+            </motion.button>
           ))}
         </div>
         
