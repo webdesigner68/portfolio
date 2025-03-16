@@ -79,10 +79,8 @@ export default function TestimonialsSection() {
   const [isAnimating, setIsAnimating] = useState(false);
   const ref = useRef(null);
   const statsRef = useRef(null);
-  const statsTitleRef = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
-  const isStatsInView = useInView(statsRef, { once: true, margin: "100px", amount: 0.3 });
-  const isStatsTitleInView = useInView(statsTitleRef, { once: true, margin: "150px", amount: 0.5 });
+  const isInView = useInView(ref, { once: true, margin: "0px", amount: 0.3 });
+  const isStatsInView = useInView(statsRef, { once: true, margin: "0px", amount: 0.3 });
   const maxIndex = testimonials.length - 1;
 
   const nextSlide = () => {
@@ -220,54 +218,74 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Statistiques - Avec un séparateur visuel */}
-        <div className="relative">
-          <div className="flex items-center justify-center my-16">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-            <div className="mx-3 w-3 h-3 rounded-full bg-blue-500/30"></div>
-            <div className="h-px w-16 bg-gradient-to-r from-blue-500/30 via-transparent to-transparent"></div>
-          </div>
-          
-          {/* Titre de la section statistiques */}
-          <motion.h3
-            ref={statsTitleRef}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isStatsTitleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="text-2xl font-bold text-center text-white mb-8"
-          >
-            <span className="relative inline-block">
-              Chiffres clés
-              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full"></div>
-            </span>
-          </motion.h3>
-          
-          <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { value: "42", label: "Projets terminés", subtext: "Applications web et sites vitrines livrés à temps", icon: "📊" },
-              { value: "100%", label: "Satisfaction client", subtext: "Tous mes clients sont satisfaits de leur projet", icon: "🙂" },
-              { value: "5.0", label: "Note moyenne", subtext: "Sur la base des retours clients", icon: "⭐" },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ 
-                  duration: 0.7, 
-                  delay: 0.2 + index * 0.3,
+        {/* Statistiques */}
+        <div ref={statsRef} className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[
+            { value: "42", label: "Projets terminés", subtext: "Applications web et sites vitrines livrés à temps", icon: "📊" },
+            { value: "100%", label: "Satisfaction client", subtext: "Tous mes clients sont satisfaits de leur projet", icon: "🙂" },
+            { value: "5.0", label: "Note moyenne", subtext: "Sur la base des retours clients", icon: "⭐" },
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              animate={isStatsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 0.7,
+                delay: index * 0.4, // Délai encore plus long entre chaque statistique
+                type: "spring",
+                stiffness: 80,
+                damping: 12
+              }}
+              className="bg-[#1e3575] rounded-xl p-6 text-center shadow-lg border border-[#304b8a]/30 hover:border-blue-400/30 transition-colors group transform-gpu"
+            >
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={isStatsInView ? { scale: 1 } : {}}
+                transition={{
+                  delay: index * 0.4 + 0.2,
                   type: "spring",
                   stiffness: 200,
-                  damping: 20
+                  damping: 15
                 }}
-                className="bg-[#1e3575] rounded-xl p-6 text-center shadow-lg border border-[#304b8a]/30 hover:border-blue-400/30 transition-colors group"
+                className="text-3xl mb-3"
               >
-                <div className="text-3xl mb-3">{stat.icon}</div>
-                <div className="text-4xl font-bold text-blue-400 mb-2 group-hover:text-blue-300 transition-colors">{stat.value}</div>
-                <div className="text-white text-lg tracking-wide mb-2">{stat.label}</div>
-                <div className="text-gray-300 text-sm">{stat.subtext}</div>
+                {stat.icon}
               </motion.div>
-            ))}
-          </div>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={isStatsInView ? { y: 0, opacity: 1 } : {}}
+                transition={{
+                  delay: index * 0.4 + 0.3,
+                  duration: 0.5
+                }}
+                className="text-4xl font-bold text-blue-400 mb-2 group-hover:text-blue-300 transition-colors"
+              >
+                {stat.value}
+              </motion.div>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={isStatsInView ? { y: 0, opacity: 1 } : {}}
+                transition={{
+                  delay: index * 0.4 + 0.4,
+                  duration: 0.5
+                }}
+                className="text-white text-lg tracking-wide mb-2"
+              >
+                {stat.label}
+              </motion.div>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={isStatsInView ? { y: 0, opacity: 1 } : {}}
+                transition={{
+                  delay: index * 0.4 + 0.5,
+                  duration: 0.5
+                }}
+                className="text-gray-300 text-sm"
+              >
+                {stat.subtext}
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
