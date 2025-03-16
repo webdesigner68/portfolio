@@ -4,9 +4,8 @@ const nextConfig = {
     // Avertissement au lieu d'erreur pendant le build
     ignoreDuringBuilds: true,
   },
-  output: 'export',
   images: {
-    unoptimized: true,
+    domains: ['lottie.host'],
   },
   trailingSlash: true,
 };
