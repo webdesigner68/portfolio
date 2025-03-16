@@ -30,18 +30,33 @@ export default function ContactSection() {
     setSubmitSuccess(false);
     setSubmitError(false);
 
-    // Simuler un envoi de formulaire
+    // Récupérer les données du formulaire
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
     try {
-      // Remplacer par votre logique d'envoi de formulaire réelle
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setSubmitSuccess(true);
-      setFormState({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
+      // Envoyer le formulaire à Netlify
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString(),
       });
+
+      if (response.ok) {
+        setSubmitSuccess(true);
+        // Réinitialiser le formulaire
+        setFormState({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        form.reset();
+      } else {
+        throw new Error("Erreur lors de l'envoi du formulaire");
+      }
     } catch (error) {
+      console.error("Erreur de soumission:", error);
       setSubmitError(true);
     } finally {
       setIsSubmitting(false);
@@ -143,7 +158,16 @@ export default function ContactSection() {
               <h3 className="text-xl font-bold mb-6 text-white leading-tight">
                 Envoyez-moi un <span className="text-blue-400">message</span>
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+                name="contact" 
+                method="POST" 
+                data-netlify="true"
+                onSubmit={handleSubmit} 
+                className="space-y-6"
+              >
+                {/* Champ caché nécessaire pour Netlify */}
+                <input type="hidden" name="form-name" value="contact" />
+                
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                     Nom complet <span className="text-blue-400">*</span>
