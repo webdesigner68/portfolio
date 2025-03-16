@@ -1,7 +1,8 @@
 "use client";
 import { useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { AnimateOnScroll } from "../utils/ScrollAnimations";
 import {
   PaintBrushIcon,
   CodeBracketIcon,
@@ -135,7 +136,6 @@ const specializedServices = [
 
 export default function ServicesSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
   const [selectedService, setSelectedService] = useState<typeof specializedServices[0] | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -148,35 +148,27 @@ export default function ServicesSection() {
     <section id="services" ref={ref} className="py-16 md:py-24 bg-[#1e3575]">
       <div className="container-section">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4 }}
+          <AnimateOnScroll
+            animation="fade-in"
+            duration={0.4}
             className="section-title"
           >
             Mes <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">services</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.1 }}
+          </AnimateOnScroll>
+          <AnimateOnScroll
+            animation="fade-in"
+            delay={0.1}
+            duration={0.4}
             className="text-lg md:text-xl text-gray-300 leading-relaxed mt-4 max-w-2xl mx-auto"
           >
             Des solutions sur mesure pour donner vie à vos projets web.
-          </motion.p>
+          </AnimateOnScroll>
 
           {/* Bannière délais express - Nouvelle section très visible */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { 
-              opacity: 1, 
-              y: 0,
-              transition: {
-                type: "spring",
-                stiffness: 300,
-                damping: 20
-              }
-            } : {}}
+          <AnimateOnScroll
+            animation="fade-in"
+            delay={0.2}
+            duration={0.5}
             className="mt-8 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 rounded-2xl p-6 border-2 border-blue-500/30 shadow-lg shadow-blue-500/5 overflow-hidden relative"
           >
             <div className="absolute top-0 left-0 w-full h-full bg-blue-500/5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent opacity-60"></div>
@@ -210,13 +202,13 @@ export default function ServicesSection() {
             <p className="text-gray-200 text-sm italic relative z-10">
               Livraison express sans compromis sur la qualité — Ne perdez plus de temps avec des prestataires trop lents
             </p>
-          </motion.div>
+          </AnimateOnScroll>
 
           {/* Bouton CTA principal ajouté en haut */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.2 }}
+          <AnimateOnScroll
+            animation="fade-in"
+            delay={0.3}
+            duration={0.4}
             className="mt-8"
           >
             <Link 
@@ -228,14 +220,14 @@ export default function ServicesSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </Link>
-          </motion.div>
+          </AnimateOnScroll>
         </div>
 
         {/* Services spécialisés mis en avant */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.1 }}
+        <AnimateOnScroll
+          animation="fade-in"
+          delay={0.4}
+          duration={0.4}
           className="mb-24"
         >
           <h3 className="text-2xl font-bold text-center text-white mb-12">
@@ -245,18 +237,18 @@ export default function ServicesSection() {
             </span>
           </h3>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {specializedServices.map((service, index) => (
-              <motion.div
+              <AnimateOnScroll
                 key={service.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.1 + index * 0.05 }}
-                className="relative group"
+                animation="fade-in"
+                delay={0.1 + index * 0.1}
+                duration={0.5}
+                className="group cursor-pointer relative"
               >
                 <div className="absolute inset-0 bg-gradient-to-br opacity-50 blur-xl group-hover:opacity-70 transition-opacity rounded-2xl"
                   style={{ backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))` }}
-                  ></div>
+                ></div>
                 <div className={`relative overflow-hidden rounded-2xl bg-[#0f1c3a] border border-[#304b8a]/30 group-hover:border-blue-400/30 transition-colors shadow-xl h-full p-8 z-10`}>
                   {/* Gradient background for top section */}
                   <div className={`absolute top-0 left-0 right-0 h-24 bg-gradient-to-br ${service.color} opacity-20`}></div>
@@ -307,10 +299,10 @@ export default function ServicesSection() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </AnimateOnScroll>
             ))}
           </div>
-        </motion.div>
+        </AnimateOnScroll>
 
         {/* Services standards */}
         <h3 className="text-2xl font-bold text-center text-white mb-12">
@@ -324,11 +316,11 @@ export default function ServicesSection() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {services.map((service, index) => (
-            <motion.div
+            <AnimateOnScroll
               key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.1 + index * 0.05 }}
+              animation="fade-in"
+              delay={0.1 + index * 0.05}
+              duration={0.4}
               className="bg-[#162855] rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-[#304b8a]/30 group hover:border-blue-400/30"
             >
               <div className="w-14 h-14 bg-blue-500/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
@@ -340,37 +332,37 @@ export default function ServicesSection() {
               <p className="text-gray-300 leading-relaxed">
                 {service.description}
               </p>
-            </motion.div>
+            </AnimateOnScroll>
           ))}
         </div>
 
         {/* Section "Comment je travaille" */}
         <div className="mt-24">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.2 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              duration={0.4}
+              delay={0.2}
               className="section-title"
             >
               Comment je <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">travaille</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.2 }}
+            </AnimateOnScroll>
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.2}
+              duration={0.4}
               className="text-lg md:text-xl text-gray-300 mt-4 mb-12 leading-relaxed max-w-2xl mx-auto"
             >
               Une approche structurée pour garantir des résultats exceptionnels.
-            </motion.p>
+            </AnimateOnScroll>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Étapes de travail */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.2 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.2}
+              duration={0.4}
               className="relative"
             >
               <div className="bg-[#0f1c3a] rounded-xl p-8 h-full border-l-4 border-blue-500 hover:border-blue-400 transition-colors group">
@@ -380,12 +372,12 @@ export default function ServicesSection() {
                   Analyse de vos besoins, objectifs et public cible pour comprendre parfaitement votre projet.
                 </p>
               </div>
-            </motion.div>
+            </AnimateOnScroll>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.25 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.25}
+              duration={0.4}
               className="relative"
             >
               <div className="bg-[#0f1c3a] rounded-xl p-8 h-full border-l-4 border-blue-500 hover:border-blue-400 transition-colors group">
@@ -395,12 +387,12 @@ export default function ServicesSection() {
                   Création de wireframes et maquettes pour visualiser et valider l'interface avant développement.
                 </p>
               </div>
-            </motion.div>
+            </AnimateOnScroll>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.3 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.3}
+              duration={0.4}
               className="relative"
             >
               <div className="bg-[#0f1c3a] rounded-xl p-8 h-full border-l-4 border-blue-500 hover:border-blue-400 transition-colors group">
@@ -410,39 +402,31 @@ export default function ServicesSection() {
                   Intégration et programmation avec des technologies modernes pour un site performant et évolutif.
                 </p>
               </div>
-            </motion.div>
+            </AnimateOnScroll>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.35 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.35}
+              duration={0.4}
               className="relative"
             >
               <div className="bg-[#0f1c3a] rounded-xl p-8 h-full border-l-4 border-blue-500 hover:border-blue-400 transition-colors group">
                 <div className="absolute -left-4 top-8 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">4</div>
                 <h3 className="text-xl font-bold mb-4 text-white pl-5 group-hover:text-blue-300 transition-colors">Lancement</h3>
                 <p className="text-gray-300 pl-5 leading-relaxed">
-                  Tests approfondis, optimisations finales et mise en ligne de votre projet avec suivi post-lancement.
+                  Tests rigoureux, optimisations finales et mise en ligne de votre projet avec un support continu.
                 </p>
               </div>
-            </motion.div>
+            </AnimateOnScroll>
           </div>
         </div>
 
         {/* Call to action amélioré avec animation */}
         <div className="mt-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ 
-              duration: 0.6, 
-              delay: 0.5,
-              type: "spring",
-              stiffness: 200,
-              damping: 15
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+          <AnimateOnScroll
+            animation="zoom-in"
+            delay={0.2}
+            duration={0.6}
             className="inline-block"
           >
             <Link
@@ -464,9 +448,7 @@ export default function ServicesSection() {
               </span>
               <span className="absolute -bottom-10 left-0 right-0 h-40 bg-blue-500/20 blur-3xl rounded-full transform scale-x-150 scale-y-50 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></span>
             </Link>
-            
-            <p className="text-gray-400 mt-4 text-sm">Réponse sous 24h - Sans engagement</p>
-          </motion.div>
+          </AnimateOnScroll>
         </div>
       </div>
 

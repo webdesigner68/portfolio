@@ -1,8 +1,9 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { AnimateOnScroll } from "../utils/ScrollAnimations";
 
 const skills = [
   { name: "React & Next.js", level: 95 },
@@ -17,7 +18,6 @@ const skills = [
 
 export default function AboutSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "500px", amount: 0.2 });
   
   return (
     <section id="about" ref={ref} className="py-16 md:py-24 bg-gradient-to-b from-[#162855] to-[#0f1c3a]">
@@ -28,33 +28,23 @@ export default function AboutSection() {
       
         <div className="xl:w-1/2 lg:mt-0 mt-10 relative">
           <div className="space-y-8">
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
-              className="section-title"
-            >
-              À propos de <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">moi</span>
-            </motion.h2>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-lg md:text-xl text-gray-300 leading-relaxed"
-            >
-              Passionné par le développement web depuis 3 ans, je conçois des solutions digitales sur mesure qui allient esthétique et fonctionnalité. Mon approche est centrée sur l'utilisateur et la création d'expériences web intuitives.
-            </motion.p>
+            <AnimateOnScroll animation="fade-in" duration={0.5}>
+              <h2 className="section-title">
+                À propos de <span className="bg-gradient-to-r from-blue-400 to-indigo-400 text-transparent bg-clip-text">moi</span>
+              </h2>
+            </AnimateOnScroll>
+            
+            <AnimateOnScroll animation="fade-in" delay={0.1} duration={0.5}>
+              <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+                Passionné par le développement web depuis 3 ans, je conçois des solutions digitales sur mesure qui allient esthétique et fonctionnalité. Mon approche est centrée sur l'utilisateur et la création d'expériences web intuitives.
+              </p>
+            </AnimateOnScroll>
           </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Lottie Animation */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }} 
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
+          <AnimateOnScroll animation="fade-in-left" duration={0.8} className="relative">
             <div className="relative mx-auto max-w-md">
               {/* Effet de lueur */}
               <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full transform scale-90"></div>
@@ -80,59 +70,44 @@ export default function AboutSection() {
               </div>
               
               {/* Experience badge */}
-              <div className="absolute -bottom-8 -right-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full w-36 h-36 flex flex-col items-center justify-center shadow-lg transform rotate-3 border-4 border-[#0f1c3a]">
-                <motion.span 
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ delay: 0.8, duration: 0.5 }}
-                  className="text-4xl font-bold"
-                >
-                  3
-                </motion.span>
-                <motion.span 
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ delay: 0.9, duration: 0.5 }}
-                  className="text-sm font-medium mt-1"
-                >
-                  ans d'expérience
-                </motion.span>
-              </div>
+              <AnimateOnScroll animation="zoom-in" delay={0.3} duration={0.5} className="absolute -bottom-8 -right-8 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full w-36 h-36 flex flex-col items-center justify-center shadow-lg transform rotate-3 border-4 border-[#0f1c3a]">
+                <span className="text-4xl font-bold">3</span>
+                <span className="text-sm font-medium mt-1">ans d'expérience</span>
+              </AnimateOnScroll>
             </div>
-          </motion.div>
+          </AnimateOnScroll>
           
           {/* Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }} 
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+          <AnimateOnScroll 
+            animation="fade-in-right"
+            duration={0.8}
             className="space-y-8"
           >
-            <motion.h3 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 }}
+            <AnimateOnScroll 
+              animation="fade-in"
+              delay={0.3}
+              duration={0.5}
               className="text-2xl md:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 leading-tight"
             >
               Webdesigner passionné <span className="text-blue-400">&</span> développeur front-end
-            </motion.h3>
+            </AnimateOnScroll>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.2}
+              duration={0.5}
               className="relative p-6 bg-[#132347]/70 rounded-xl border border-blue-500/10 shadow-lg"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl"></div>
               <p className="text-gray-300 leading-relaxed text-base md:text-lg relative z-10">
                 Depuis <span className="font-medium text-blue-300">3 ans</span>, je crée des expériences web qui allient esthétique et performance. Ma passion est de transformer des idées en interfaces interactives et intuitives qui captent l'attention et engagent les utilisateurs.
               </p>
-            </motion.div>
+            </AnimateOnScroll>
             
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
+            <AnimateOnScroll
+              animation="fade-in"
+              delay={0.2}
+              duration={0.5}
               className="relative p-6 bg-[#132347]/70 rounded-xl border border-blue-500/10 shadow-lg"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-blue-500/5 rounded-xl"></div>
@@ -152,13 +127,13 @@ export default function AboutSection() {
                 </span>. 
                 Chaque projet est pour moi l'occasion de créer une expérience digitale unique qui répond précisément aux objectifs de mes clients.
               </p>
-            </motion.div>
+            </AnimateOnScroll>
             
             {/* Skills */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.6 }}
+            <AnimateOnScroll 
+              animation="fade-in"
+              delay={0.3}
+              duration={0.5}
               className="pt-6"
             >
               <div className="flex items-center mb-8">
@@ -171,11 +146,11 @@ export default function AboutSection() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {skills.map((skill, index) => (
-                  <motion.div 
+                  <AnimateOnScroll 
                     key={skill.name}
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                    animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                    transition={{ duration: 0.5, delay: 0.7 + (index % 4) * 0.1 }}
+                    animation="fade-in"
+                    delay={0.4 + (index % 4) * 0.1}
+                    duration={0.5}
                     className="relative"
                   >
                     <div className="bg-[#132347] border border-blue-500/10 rounded-xl p-4 relative overflow-hidden group hover:border-blue-400/30 transition-all duration-300 shadow-lg">
@@ -190,12 +165,16 @@ export default function AboutSection() {
                         <div className="flex flex-col">
                           <span className="font-bold text-white tracking-wide text-lg mb-1">{skill.name}</span>
                           <div className="w-full h-2 bg-[#0f1c3a] rounded-full overflow-hidden shadow-inner mt-2">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={isInView ? { width: `${skill.level}%` } : {}}
-                              transition={{ duration: 1.2, delay: 1 + index * 0.15, ease: "easeOut" }}
+                            <div
+                              style={{ 
+                                width: `${skill.level}%`,
+                                height: '100%',
+                                backgroundImage: 'linear-gradient(to right, #60a5fa, #6366f1)',
+                                borderRadius: '9999px',
+                                transition: 'width 1.2s ease-out'
+                              }}
                               className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full"
-                            ></motion.div>
+                            ></div>
                           </div>
                         </div>
                         <div className="relative">
@@ -206,11 +185,11 @@ export default function AboutSection() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </AnimateOnScroll>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </AnimateOnScroll>
+          </AnimateOnScroll>
         </div>
       </div>
     </section>

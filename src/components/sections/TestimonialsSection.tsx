@@ -79,8 +79,8 @@ export default function TestimonialsSection() {
   const [isAnimating, setIsAnimating] = useState(false);
   const ref = useRef(null);
   const statsRef = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-20% 0px" });
-  const isStatsInView = useInView(statsRef, { once: true, margin: "-20% 0px" });
+  const isInView = useInView(ref, { once: true, margin: "0px", amount: 0.3 });
+  const isStatsInView = useInView(statsRef, { once: true, margin: "0px", amount: 0.3 });
   const maxIndex = testimonials.length - 1;
 
   const nextSlide = () => {

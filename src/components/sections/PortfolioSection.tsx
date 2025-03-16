@@ -50,7 +50,7 @@ const projects: Project[] = [
     title: "Site Vitrine Boulangerie",
     category: "Site Vitrine",
     description: "Création d'un site moderne pour une boulangerie artisanale présentant leurs produits, horaires et actualités avec une esthétique gourmande et chaleureuse.",
-    image: "/portfolio/coiffeuse.PNG",
+    image: "/images/boulangerie.PNG",
     tags: ["Gatsby", "Tailwind CSS", "Netlify CMS"],
     url: "#"
   },
@@ -82,8 +82,8 @@ export default function PortfolioSection() {
   const x = useMotionValue(0);
   const statsRef = useRef(null);
   const portfolioRef = useRef(null);
-  const isStatsInView = useInView(statsRef, { once: true, margin: "-20% 0px" });
-  const isPortfolioInView = useInView(portfolioRef, { once: true, margin: "-20% 0px" });
+  const isStatsInView = useInView(statsRef, { once: true, margin: "0px", amount: 0.3 });
+  const isPortfolioInView = useInView(portfolioRef, { once: true, margin: "0px", amount: 0.3 });
 
   // Fonction pour empêcher le scroll horizontal sur la page
   useEffect(() => {

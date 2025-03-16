@@ -1,13 +1,13 @@
 @echo off
 echo ================================================
-echo Script de push GitHub pour Netlify
+echo Deploiement des corrections sur Netlify
 echo ================================================
 echo.
-echo Poussée du code vers GitHub...
+echo Poussee du code vers GitHub...
 git push -u origin main
 echo.
-echo Terminé!
+echo Termine!
 echo.
-echo Maintenant, allez sur Netlify (https://app.netlify.com) pour déployer votre site.
+echo Le site sera automatiquement mis a jour sur Netlify dans quelques minutes.
 echo.
 pause 
